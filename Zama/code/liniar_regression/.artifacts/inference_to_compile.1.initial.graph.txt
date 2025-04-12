@@ -1,0 +1,10 @@
+%0 = q_X                                   # EncryptedTensor<int20, shape=(1, 16)>
+%1 = [[ 524287] ... [-307496]]             # ClearTensor<int20, shape=(16, 1)>
+%2 = matmul(%0, %1)                        # EncryptedTensor<uint5, shape=(1, 1)>
+%3 = sum(%0, axis=1, keepdims=True)        # EncryptedTensor<uint5, shape=(1, 1)>
+%4 = -373511                               # ClearScalar<int20>
+%5 = multiply(%4, %3)                      # EncryptedTensor<uint1, shape=(1, 1)>
+%6 = subtract(%2, %5)                      # EncryptedTensor<uint1, shape=(1, 1)>
+%7 = [[-584484166678]]                     # ClearTensor<int41, shape=(1, 1)>
+%8 = add(%6, %7)                           # EncryptedTensor<uint2, shape=(1, 1)>
+return %8

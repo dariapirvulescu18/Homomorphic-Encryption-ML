@@ -1,0 +1,14 @@
+module {
+  func.func @inference_to_compile(%arg0: tensor<1x16x!FHE.esint<42>>) -> tensor<1x1x!FHE.esint<42>> {
+    %cst = arith.constant dense<[[524287], [-524288], [-59234], [9430], [-176797], [-120883], [-154554], [-178572], [-219321], [-200359], [-292357], [-235067], [-131210], [-177632], [-130749], [-307496]]> : tensor<16x1xi21>
+    %0 = "FHELinalg.matmul_eint_int"(%arg0, %cst) : (tensor<1x16x!FHE.esint<42>>, tensor<16x1xi21>) -> tensor<1x1x!FHE.esint<42>>
+    %1 = "FHELinalg.sum"(%arg0) {axes = [1], keep_dims = true} : (tensor<1x16x!FHE.esint<42>>) -> tensor<1x1x!FHE.esint<42>>
+    %c-373511_i21 = arith.constant -373511 : i21
+    %from_elements = tensor.from_elements %c-373511_i21 : tensor<1xi21>
+    %2 = "FHELinalg.mul_eint_int"(%1, %from_elements) : (tensor<1x1x!FHE.esint<42>>, tensor<1xi21>) -> tensor<1x1x!FHE.esint<42>>
+    %3 = "FHELinalg.sub_eint"(%0, %2) : (tensor<1x1x!FHE.esint<42>>, tensor<1x1x!FHE.esint<42>>) -> tensor<1x1x!FHE.esint<42>>
+    %cst_0 = arith.constant dense<-584484166678> : tensor<1x1xi42>
+    %4 = "FHELinalg.add_eint_int"(%3, %cst_0) : (tensor<1x1x!FHE.esint<42>>, tensor<1x1xi42>) -> tensor<1x1x!FHE.esint<42>>
+    return %4 : tensor<1x1x!FHE.esint<42>>
+  }
+}
